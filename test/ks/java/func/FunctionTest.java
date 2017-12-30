@@ -24,5 +24,22 @@ public class FunctionTest {
 		assertEquals(16, result);
 	}
 	
+	@Test
+	public void addFunctionTest() {
+		Function<Integer, Function<Integer, Integer>> add = new AddFunction();
+		
+		int result = add.apply(5).apply(13);
+		
+		assertEquals(18, result);
+	}
+	
+	@Test
+	public void multBinaryOpTest() {
+		BinaryOperator mult = x -> y -> x * y; 
+				
+		int result = mult.apply(5).apply(13);
+		
+		assertEquals(65, result);
+	}
 	
 }
