@@ -113,4 +113,14 @@ public class FunctionUtilsTest {
 		
 		assertEquals("Square of x is: 4", result);
 	}
+	
+	@Test
+	public void testHigherComposeSimple() {
+		// this one won't compile as java infers T, U, V to be of type Object and Function<Integer, Integer> is not of type Function<Object, Object>
+//		int tripleSquared = FunctionUtils.higherCompose().apply(new TripleFunction()).apply(new SquareFunction()).apply(2);
+		// dirty solution is to specify the types of T, U, V explicitly
+		int tripleSquared = FunctionUtils.<Integer, Integer, Integer>higherCompose().apply(new TripleFunction()).apply(new SquareFunction()).apply(2);
+		
+		assertEquals(12, tripleSquared);
+	}
 }
