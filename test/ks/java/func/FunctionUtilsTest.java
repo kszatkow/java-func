@@ -123,4 +123,31 @@ public class FunctionUtilsTest {
 		
 		assertEquals(12, tripleSquared);
 	}
+	
+	@Test
+	public void testHigherAndThenSimple() {
+		int tripleSquared = FunctionUtils.<Integer, Integer, Integer>higherAndThen().apply(new SquareFunction()).apply(new TripleFunction()).apply(2);
+		
+		assertEquals(12, tripleSquared);
+	}
+	
+	@Test
+	public void testHigherComposeVariousTypes() {
+		Function<Double, Integer> f = a -> (int) (a * 3);
+		Function<Long, Double> g = a -> a + 2.0;
+		
+		int result = FunctionUtils.<Long, Double, Integer>higherCompose().apply(f).apply(g).apply(1L);
+		
+		assertEquals(9, result);
+	}
+	
+	@Test
+	public void testComposeAndThenVariousTypes() {
+		Function<Double, Integer> f = a -> (int) (a * 3);
+		Function<Long, Double> g = a -> a + 2.0;
+		
+		int result = FunctionUtils.<Long, Double, Integer>higherAndThen().apply(g).apply(f).apply(1L);
+		
+		assertEquals(9, result);
+	}
 }
