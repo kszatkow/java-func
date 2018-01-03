@@ -32,4 +32,13 @@ public final class FunctionUtils {
 	> higherAndThen() {
 		return x -> y -> z -> y.apply(x.apply(z));
 	}
+	
+	public static <T, U, V> Function<U, V> partialA(T argA, Function<T, Function<U, V>> f) {
+		return f.apply(argA);
+	}
+
+	public static <T, U, V> Function<T, V> partialB(U argB, Function<T, Function<U, V>> f) {
+		return x -> f.apply(x).apply(argB);
+	}
+	
 }

@@ -150,4 +150,25 @@ public class FunctionUtilsTest {
 		
 		assertEquals(9, result);
 	}
+	
+	@Test
+	public void testPartialA() {
+		Function<Integer, Function<Integer, Integer>> add = x -> y -> x + y;
+		Function<Integer, Integer> add2 = FunctionUtils.partialA(2, add);
+		
+		int result = add2.apply(5);
+		
+		assertEquals(7, result);
+	}
+	
+	@Test
+	public void testPartialB() {
+		Function<Integer, Function<Integer, Integer>> divide = x -> y -> x / y;
+		Function<Integer, Integer> divideBy2 = FunctionUtils.partialB(2, divide);
+		
+		int result = divideBy2.apply(10);
+		
+		assertEquals(5, result);
+	}
+	
 }
