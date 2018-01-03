@@ -95,4 +95,22 @@ public class FunctionUtilsTest {
 		
 		assertEquals(25, result);
 	}
+	
+	@Test
+	public void testGenericComposeSimple() {
+		Function<Integer, Integer> tripleSquare = FunctionUtils.genericCompose(new TripleFunction(), new SquareFunction());
+		
+		int result = tripleSquare.apply(2);
+		
+		assertEquals(12, result);
+	}
+	
+	@Test
+	public void testGenericComposeVariousTypes() {
+		Function<Integer, String> printSquare = FunctionUtils.genericCompose(x -> "Square of x is: " + x, new SquareFunction());
+		
+		String result = printSquare.apply(2);
+		
+		assertEquals("Square of x is: 4", result);
+	}
 }
