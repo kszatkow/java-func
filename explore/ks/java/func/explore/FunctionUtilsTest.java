@@ -1,10 +1,14 @@
-package ks.java.func;
+package ks.java.func.explore;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import ks.java.func.Function;
+import ks.java.func.aux.SquareFunction;
+import ks.java.func.aux.TripleFunction;
 
 public class FunctionUtilsTest {
 
@@ -26,8 +30,7 @@ public class FunctionUtilsTest {
 		assertEquals(36, result);
 	}
 	
-	@Test
-	@Disabled
+	@Test // this one is going to fail because of stack overflow
 	public void testComposeOverflow() {
 		final int composeitionsNum = 10000;
 		
@@ -94,61 +97,6 @@ public class FunctionUtilsTest {
 		int result = compose.apply(new SquareFunction()).apply(x -> y -> x + y).apply(2).apply(3);
 		
 		assertEquals(25, result);
-	}
-	
-	@Test
-	public void testGenericComposeSimple() {
-		Function<Integer, Integer> tripleSquare = FunctionUtils.genericCompose(new TripleFunction(), new SquareFunction());
-		
-		int result = tripleSquare.apply(2);
-		
-		assertEquals(12, result);
-	}
-	
-	@Test
-	public void testGenericComposeVariousTypes() {
-		Function<Integer, String> printSquare = FunctionUtils.genericCompose(x -> "Square of x is: " + x, new SquareFunction());
-		
-		String result = printSquare.apply(2);
-		
-		assertEquals("Square of x is: 4", result);
-	}
-	
-	@Test
-	public void testHigherComposeSimple() {
-		// this one won't compile as java infers T, U, V to be of type Object and Function<Integer, Integer> is not of type Function<Object, Object>
-//		int tripleSquared = FunctionUtils.higherCompose().apply(new TripleFunction()).apply(new SquareFunction()).apply(2);
-		// dirty solution is to specify the types of T, U, V explicitly
-		int tripleSquared = FunctionUtils.<Integer, Integer, Integer>higherCompose().apply(new TripleFunction()).apply(new SquareFunction()).apply(2);
-		
-		assertEquals(12, tripleSquared);
-	}
-	
-	@Test
-	public void testHigherAndThenSimple() {
-		int tripleSquared = FunctionUtils.<Integer, Integer, Integer>higherAndThen().apply(new SquareFunction()).apply(new TripleFunction()).apply(2);
-		
-		assertEquals(12, tripleSquared);
-	}
-	
-	@Test
-	public void testHigherComposeVariousTypes() {
-		Function<Double, Integer> f = a -> (int) (a * 3);
-		Function<Long, Double> g = a -> a + 2.0;
-		
-		int result = FunctionUtils.<Long, Double, Integer>higherCompose().apply(f).apply(g).apply(1L);
-		
-		assertEquals(9, result);
-	}
-	
-	@Test
-	public void testComposeAndThenVariousTypes() {
-		Function<Double, Integer> f = a -> (int) (a * 3);
-		Function<Long, Double> g = a -> a + 2.0;
-		
-		int result = FunctionUtils.<Long, Double, Integer>higherAndThen().apply(g).apply(f).apply(1L);
-		
-		assertEquals(9, result);
 	}
 	
 	@Test
