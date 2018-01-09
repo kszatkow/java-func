@@ -2,6 +2,7 @@ package ks.java.func.explore;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -39,9 +40,10 @@ public class FunctionUtilsTest {
 		for (int i = 0; i < composeitionsNum; ++i) {
 			g = FunctionUtils.compose(f, g);
 		}
+		final Function<Integer, Integer> composed = g;
 		
 		// this call is supposed to cause stack overflow because of too many compositions
-		assertNotNull(g.apply(1));
+		assertThrows(StackOverflowError.class, () -> composed.apply(1));
 	}
 	
 	@Test
