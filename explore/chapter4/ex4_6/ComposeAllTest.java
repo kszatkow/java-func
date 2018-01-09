@@ -3,10 +3,13 @@ package chapter4.ex4_6;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
-import chapter3.ex3_10.solution.ListMap;
-import chapter3.ex3_14.solution.Range;
+import chapter4.ex4_3.FoldList;
+import chapter4.ex4_4.Range;
 import ks.java.func.Function;
 
 public class ComposeAllTest {
@@ -26,7 +29,7 @@ public class ComposeAllTest {
 	@Test
 	public void testCompose2() {
 		Function<Integer, Integer> add = y -> y + 1;
-		Function<Integer, Integer> f = ComposeAll.composeAll(ListMap.map(Range.range(0, 500), x -> add));
+		Function<Integer, Integer> f = ComposeAll.composeAll(map(Range.range(0, 500), x -> add));
 		
 		int result = f.apply(0);
 		
@@ -37,6 +40,19 @@ public class ComposeAllTest {
 	public void testComposeStackOverflow() {
 		Function<Integer, Integer> add = y -> y + 1;
 		
-		assertThrows(StackOverflowError.class, () -> ComposeAll.composeAll(ListMap.map(Range.range(0, 15000), x -> add)));
+		Function<Integer, Integer> f = ComposeAll.composeAll(map(Range.range(0, 15000), x -> add));
+		
+		assertThrows(StackOverflowError.class, () -> f.apply(0));
 	}
+	
+	private static <T, U> List<U> map(List<T> list, Function<T, U> f) {
+		return FoldList.foldLeft(list, new ArrayList<U>(), l -> e -> append(l, f.apply(e)));
+	}
+	
+	private static <T> List<T> append(List<T> list, T elem) {
+		list.add(elem);
+		return list;
+	}
+	
+	
 }
