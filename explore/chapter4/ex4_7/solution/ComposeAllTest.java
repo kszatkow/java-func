@@ -71,6 +71,19 @@ public class ComposeAllTest {
 	}
 	
 	@Test
+	public void testCompose1FR() {
+		Function<Integer, Integer> f = ComposeAll.<Integer>composeAll(
+				x -> 3 * x,
+				x -> x + 7,
+				x -> 2 * x);
+		
+		int result = f.apply(3);
+		
+		assertEquals(39, result);
+	}
+	
+	
+	@Test
 	public void testCompose2FR() {
 		Function<Integer, Integer> add = y -> y + 1;
 		Function<Integer, Integer> f = ComposeAll.composeAllFoldRight(map(Range.range(0, 500), x -> add));
