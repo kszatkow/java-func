@@ -1,4 +1,4 @@
-package chapter4.ex4_6;
+package chapter4.ex4_6.solution;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import chapter4.ex4_3.FoldList;
-import chapter4.ex4_4.Range;
+import chapter4.ex4_3.solution.FoldList;
+import chapter4.ex4_4.solution.Range;
 import ks.java.func.Function;
 
 public class ComposeAllTest {

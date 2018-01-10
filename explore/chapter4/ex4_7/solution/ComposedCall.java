@@ -1,4 +1,4 @@
-package chapter4.ex4_7;
+package chapter4.ex4_7.solution;
 
 import ks.java.func.Function;
 import ks.java.func.Tuple;

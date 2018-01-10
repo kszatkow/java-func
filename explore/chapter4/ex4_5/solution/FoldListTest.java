@@ -1,4 +1,4 @@
-package chapter4.ex4_5;
+package chapter4.ex4_5.solution;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

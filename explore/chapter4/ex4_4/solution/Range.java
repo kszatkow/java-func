@@ -1,4 +1,4 @@
-package chapter4.ex4_4;
+package chapter4.ex4_4.solution;
 
 import java.util.ArrayList;
 import java.util.List;

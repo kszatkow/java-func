@@ -1,4 +1,4 @@
-package chapter4.ex4_1;
+package chapter4.ex4_1.solution;
 
 import java.math.BigInteger;
 

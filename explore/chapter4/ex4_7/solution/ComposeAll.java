@@ -1,9 +1,9 @@
-package chapter4.ex4_7;
+package chapter4.ex4_7.solution;
 
 import java.util.Arrays;
 import java.util.List;
 
-import chapter4.ex4_3.FoldList;
+import chapter4.ex4_3.solution.FoldList;
 import ks.java.func.Function;
 
 public class ComposeAll {
@@ -18,7 +18,7 @@ public class ComposeAll {
 	}
 	
 	public static <T> Function<T, T> composeAllFoldRight(List<Function<T, T>> funcs) {
-		return x -> chapter4.ex4_5.FoldList.<Function<T, T>, ComposedCall<T>>foldRight(
+		return x -> chapter4.ex4_5.solution.FoldList.<Function<T, T>, ComposedCall<T>>foldRight(
 				funcs, ComposedCall.single(arg -> arg), f -> accum -> ComposedCall.composed(accum, f)).eval(x);
 	}
 
