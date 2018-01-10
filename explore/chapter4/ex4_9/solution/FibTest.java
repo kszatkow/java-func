@@ -1,0 +1,70 @@
+package chapter4.ex4_9.solution;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Test;
+
+public class FibTest {
+
+	@Test
+	public void testFib() {
+		List<BigInteger> fibExp = Arrays.asList(0, 1, 1, 2, 3, 5, 8, 13, 21, 34).stream().map(i -> BigInteger.valueOf(i)).collect(Collectors.toList());
+		
+		List<BigInteger> actual = Fib.fibList(9);
+		
+		assertEquals(fibExp, actual);
+	}
+	
+	@Test
+	public void testFibBigInt() {
+		List<BigInteger> result = Fib.fibList(5000);
+		
+		assertEquals(new BigInteger(
+				"38789684543883256337019163083259053120821277146462451061605972148955501390440370970108229164"
+				+ "6221066947929345285888297381348310200895498294036143015691147893836421656394410691021450563"
+				+ "41337065586562382546567007125259299038549338139288363783475189087629707120333370529231076930"
+				+ "085180938498018038478139967488817655546537882916442689129803846137789690215022930824756663462"
+				+ "249230718833248032803750391303529033045058427011476352422702109346376991040067141748832984228"
+				+ "914912731040543287532980442736768229772449877498745556919077038806370468327948113589737399931"
+				+ "101062193081490185708153978543791953056175107610530756887837660336673554452588448862416192105"
+				+ "5345749367589784902798823435102359984466393485325641195222185956306047536464547076033090242080"
+				+ "6382584929156452876291575759142343809142302917491088984155209854432486594079793571316841692868"
+				+ "039545309545388698114665082066862897420639323438488465240988742395873801976993820317174208932"
+				+ "265468879364002630797780058759129671389634214252579116872755600360311370547754724604639987588"
+				+ "046985178408674382863125"), result.get(5000));
+	}
+	
+	@Test
+	public void testFibBigInt_noStackOverflow() {
+		List<BigInteger> result = Fib.fibList(15000);
+		
+		assertEquals(15001, result.size());
+	}
+	
+	@Test
+	public void testFibListString() {
+		String result = Fib.fibListString(9);
+		
+		assertEquals("(0, 1, 1, 2, 3, 5, 8, 13, 21, 34)", result);
+	}
+	
+	@Test
+	public void testFibListSingleton() {
+		String result = Fib.fibListString(0);
+		
+		assertEquals("(0)", result);
+	}
+	
+	@Test
+	public void testFibListStringEmpty() {
+		String result = Fib.fibListString(-1);
+		
+		assertEquals("", result);
+	}
+	
+}
