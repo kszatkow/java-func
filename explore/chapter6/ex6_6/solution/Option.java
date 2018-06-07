@@ -1,0 +1,77 @@
+package chapter6.ex6_6.solution;
+
+import ks.java.func.Function;
+
+public abstract class Option<A> {
+
+	@SuppressWarnings("rawtypes")
+	private static final None NONE = new None();
+	
+	public static <A> Option<A> some(A a) {
+		return new Some<>(a);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <A> Option<A> none() {
+		return NONE;
+	}
+	
+	public abstract A getOrElse(Supplier<A> a);
+	public abstract <B> Option<B> map(Function<A, B> f);
+	
+	public <B> Option<B> flatMap(Function<A, Option<B>> f) {
+		return map(f).getOrElse(Option::none);
+	}
+
+	public Option<A> orElse(Supplier<Option<A>> a) {
+		return map(x -> this).getOrElse(a);
+	}
+	
+	public abstract Option<A> filter(Function<A, Boolean> pred);
+	
+	private final static class Some<A> extends Option<A> {
+	
+		private final A value;
+		
+		private Some(A a) {
+			value = a;
+		}
+		
+		@Override
+		public A getOrElse(Supplier<A> a) {
+			return value;
+		}
+	
+		@Override
+		public <B> Option<B> map(Function<A, B> f) {
+			return some(f.apply(value));
+		}
+
+		@Override
+		public Option<A> filter(Function<A, Boolean> pred) {
+			return pred.apply(value) ? this : none();
+		}
+		
+	}
+	
+	private final static class None<A> extends Option<A> {
+	
+		private None() {}
+		
+		@Override
+		public A getOrElse(Supplier<A> a) {
+			return a.get();
+		}
+		
+		@Override
+		public <B> Option<B> map(Function<A, B> f) {
+			return none();
+		}
+
+		@Override
+		public Option<A> filter(Function<A, Boolean> pred) {
+			return none();
+		}
+		
+	}
+}	
