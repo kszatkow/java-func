@@ -16,20 +16,26 @@ public abstract class Option<A> {
 		return NONE;
 	}
 	
-	// this does the job nicely... in a reverse order:)
-	// this is the first implementation I figured. 
-	// Obviously the list could be reversed but it didn't seem right...:)
+	// in the end the reverseSequence operation is quite similar to sequence, just foldLeft is used instead of foldRight
+	// I'm leaving short variable names, see more verbose version in sequence method
+	// I'm actually wondering which one is more readable
+	// By the way, there's some thought to it:
+	// * ol - optional list
+	// * oe - optional elem
+	// * l - list
+	// * e - elem
 	public static <A> Option<List<A>> reverseSequence(List<Option<A>> list) {
 		return list.isEmpty() ? 
 				none() :
 				list.foldLeft(Option.some(List.list()), 
-						ol -> e -> ol.equals(none()) || e.equals(none()) ? none() : test(ol, e));
+						ol -> oe -> ol.flatMap(
+								l ->  oe.map(
+											e -> l.cons(e)
+										)
+						) 
+				);
 	}
 
-	private static <A> Option<List<A>> test(Option<List<A>> ol, Option<A> e) {
-		return e.map(o -> ol.getOrElse(() -> List.list()).cons(o));
-	}
-	
 	public static <A> Option<List<A>> sequence(List<Option<A>> list) {
 	return list.isEmpty() ? 
 			none() :
