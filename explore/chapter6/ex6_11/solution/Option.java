@@ -30,18 +30,31 @@ public abstract class Option<A> {
 		return e.map(o -> ol.getOrElse(() -> List.list()).cons(o));
 	}
 	
-	// so I figured this implementation
-	// but it still needs simplifying
 	public static <A> Option<List<A>> sequence(List<Option<A>> list) {
 	return list.isEmpty() ? 
 			none() :
-			list.foldRight(Option.some(
-					List.list()), 
-					e -> pl -> !e.equals(none()) ?
-								// we know e is not none at this point
-								pl.map(x -> x.cons(e.getOrElse(() -> null))) :
-								none()
+			list.foldRight(Option.some(List.list()), 
+							currentElemOption -> alreadyProcessedListOption -> alreadyProcessedListOption.flatMap(
+									alreadyProcessedList -> currentElemOption.map(currentElem -> alreadyProcessedList.cons(currentElem))
+							)
 			);
+			
+			// types of variables used above
+			// currentElemeOption : Option<A>
+			// alreadyProcessedListOption : Option<List<A>>
+			// alreadyProcessedList : List<A>
+			// currentElem : A
+			
+			// the return type of foldRight is Option<List<A>>
+			
+			// the list is build from the very end - the last list element is processed first
+			// so the first thing to do is to map the current accumulator (which hold the list of  already processed elements in Option)
+			// to a new list with currently processed element as new head of the list and the accumulator as tail
+			// the new list is wrapped in Option
+			
+			// if the accumulator is none, calling flatMap is just gonna return NONE
+			// if the currently processed element is NONE, calling map is going to return NONE
+			// if none of the above hold, we just need to prepend the currently processed element to the accumulator by using cons method
 	}
 	
 	public abstract A getOrElse(Supplier<A> a);
