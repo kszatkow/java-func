@@ -27,7 +27,8 @@ public class UseMap {
 	  }
 
 	  static class Toon {
-	    private final String firstName;
+	    @SuppressWarnings("unused")
+		private final String firstName;
 	    private final String lastName;
 	    private final Option<String> email;
 

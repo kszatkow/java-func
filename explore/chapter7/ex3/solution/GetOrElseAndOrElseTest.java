@@ -18,7 +18,7 @@ public class GetOrElseAndOrElseTest {
 
 	@Test
 	public void testGetOrElseRight() {
-		Integer expectedVal = new Integer(1);
+		Integer expectedVal = Integer.valueOf(1);
 		Either<Exception, Integer> e = Either.right(expectedVal);
 		
 		Integer retrievedVal = e.getOrElse(() -> 7);
@@ -38,7 +38,7 @@ public class GetOrElseAndOrElseTest {
 
 	@Test
 	public void testOrElseRight() {
-		Integer expectedVal = new Integer(1);
+		Integer expectedVal =  Integer.valueOf(1);
 		Either<Exception, Integer> e = Either.right(expectedVal);
 		
 		Either<Exception, Integer> retrieved = e.orElse(() -> Either.right(7));

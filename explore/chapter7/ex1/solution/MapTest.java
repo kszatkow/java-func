@@ -34,7 +34,7 @@ public class MapTest {
 
 	@Test
 	public void testMapRight() {
-		Integer i = new Integer(1);
+		Integer i = Integer.valueOf(1);
 		Either<Exception, Integer> e = Either.right(i);
 		
 		Either<Exception, Double> mappedE = e.map(x -> Double.valueOf(x));

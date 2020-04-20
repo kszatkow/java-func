@@ -32,10 +32,12 @@ public abstract class Option<A> {
 //		return g_map_c( a_map_f(a, f), b );
 	}
 	
+	@SuppressWarnings("unused")
 	private static <A, B, C> Option<Function<B, C>> a_map_f(Option<A> a, Function<A, Function<B, C>> f) {
 		return a.map(f);
 	}
 	
+	@SuppressWarnings("unused")
 	private static <B, C> Option<C> g_map_c(Option<Function<B, C>> g, Option<B> b) {
 		return g.flatMap(f -> b.map(f));
 		// f is of type map<A>: Function<B, C>

@@ -34,7 +34,7 @@ public class FlatMapTest {
 
 	@Test
 	public void testFlatMapRight() {
-		Integer i = new Integer(1);
+		Integer i = Integer.valueOf(1);
 		Either<Exception, Integer> e = Either.right(i);
 		
 		Either<Exception, Double> mappedE = e.flatMap(x -> Either.right(Double.valueOf(x)));

@@ -14,6 +14,7 @@ public class CaseTest {
 	
 	private static Case<String> cases[];
 	
+	@SuppressWarnings("unchecked")
 	@BeforeAll
 	public static void setUpClass() {
 		Case<String> caseFizzBuzz = Case.mcase( () -> x % 3 == 0 && x % 5 == 0, () -> new Result<String>("FizzBuzz") );

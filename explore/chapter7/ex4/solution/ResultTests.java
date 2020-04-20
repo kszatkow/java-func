@@ -34,7 +34,7 @@ public class ResultTests {
 
 	@Test
 	public void testMapRight() {
-		Integer i = new Integer(1);
+		Integer i = Integer.valueOf(1);
 		Result<Integer> result = Result.success(i);
 		
 		Result<Double> mappedResult = result.map(x -> Double.valueOf(x));

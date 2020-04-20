@@ -11,6 +11,7 @@ public class Variance {
 		return varianceF.apply(series);
 	}
 
+	@SuppressWarnings("unused")
 	private static List<Double> varianceBeforeMean(List<Double> series) {
 		return series.map(x -> Math.pow(x - mean(series), 2));
 	}

@@ -16,6 +16,7 @@ public class Case<T> {
 		return new DefaultCase<>(value);
 	}
 	
+	@SafeVarargs
 	static <T> Result<T> match(DefaultCase<T> defaultCase, Case<T>... matchers) {
 		for (Case<T> matcher : matchers) {
 			if (matcher.condition()) {
