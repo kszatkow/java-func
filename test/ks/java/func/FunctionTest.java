@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import ks.java.func.aux.AddFunction;
-import ks.java.func.aux.SquareFunction;
-import ks.java.func.aux.TripleFunction;
+import ks.java.func.auxiliary.AddFunction;
+import ks.java.func.auxiliary.SquareFunction;
+import ks.java.func.auxiliary.TripleFunction;
 
 public class FunctionTest {
 

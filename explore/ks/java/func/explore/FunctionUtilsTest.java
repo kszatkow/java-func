@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import ks.java.func.Function;
-import ks.java.func.aux.SquareFunction;
-import ks.java.func.aux.TripleFunction;
+import ks.java.func.auxiliary.SquareFunction;
+import ks.java.func.auxiliary.TripleFunction;
 
 public class FunctionUtilsTest {
 

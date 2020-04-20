@@ -1,4 +1,4 @@
-package ks.java.func.aux;
+package ks.java.func.auxiliary;
 
 import ks.java.func.Function;
 
