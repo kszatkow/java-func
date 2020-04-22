@@ -61,8 +61,7 @@ public abstract class Result<V> implements Serializable {
 
 	@Override
 	public <U> Result<U> flatMap(Function<V, Result<U>> f) {
-		// TODO Auto-generated method stub
-		return null;
+		return failure(exception);
 	}
 
   }
@@ -100,8 +99,7 @@ public abstract class Result<V> implements Serializable {
 
 	@Override
 	public <U> Result<U> flatMap(Function<V, Result<U>> f) {
-		// TODO Auto-generated method stub
-		return null;
+		return f.apply(value);
 	}
 
   }

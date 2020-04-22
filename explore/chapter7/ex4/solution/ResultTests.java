@@ -42,26 +42,26 @@ public class ResultTests {
 		assertEquals("Success(1.0)", mappedResult.toString());
 	}
 	
-//	@Test
-//	public void testFlatMapLeft() {
-//		String inMsg = "Error!!!";
-//		Exception exc = new TestException(inMsg);
-//		Either<Exception, Integer> e = Either.left(exc);
-//		
-//		Either<Exception, Double> mappedE = e.flatMap(x -> Either.right(Double.valueOf(x)));
-//		
-//		assertEquals(String.format("Left(%s)", inMsg), mappedE.toString());
-//	}
-//
-//	@Test
-//	public void testFlatMapRight() {
-//		Integer i = new Integer(1);
-//		Either<Exception, Integer> e = Either.right(i);
-//		
-//		Either<Exception, Double> mappedE = e.flatMap(x -> Either.right(Double.valueOf(x)));
-//		
-//		assertEquals("Right(1.0)", mappedE.toString());
-//	}
+	@Test
+	public void testFlatMapLeft() {
+		String inMsg = "Error!!!";
+		Exception exc = new TestException(inMsg);
+		Result<Integer> result = Result.failure(exc);
+		
+		Result<Double>  mappedResult = result.flatMap(x -> Result.success(Double.valueOf(x)));
+		
+		assertEquals(String.format("Failure(%s)", inMsg), mappedResult.toString());
+	}
+
+	@Test
+	public void testFlatMapRight() {
+		Integer i = Integer.valueOf(1);
+		Result<Integer> result = Result.success(i);
+		
+		Result<Double>  mappedResult = result.flatMap(x -> Result.success(Double.valueOf(x)));
+		
+		assertEquals("Success(1.0)", mappedResult.toString());
+	}
 //	
 //	@Test
 //	public void testGetOrElseLeft() {
