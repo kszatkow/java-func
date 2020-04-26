@@ -18,6 +18,10 @@ public abstract class Result<V> implements Serializable {
 
   public abstract <U> Result<U> flatMap(Function<V, Result<U>> f);
 
+  public Result<V> orElse(Supplier<Result<V>> sup) {
+	  return map(x -> this).getOrElse(sup);
+  }
+  
   private static class Failure<V> extends Result<V> {
 
     private final RuntimeException exception;
@@ -44,14 +48,12 @@ public abstract class Result<V> implements Serializable {
 
 	@Override
 	public V getOrElse(V defaultValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return defaultValue;
 	}
 
 	@Override
 	public V getOrElse(Supplier<V> defaultValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return defaultValue.get();
 	}
 
 	@Override
@@ -82,24 +84,30 @@ public abstract class Result<V> implements Serializable {
 
 	@Override
 	public V getOrElse(V defaultValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return value;
 	}
 
 	@Override
 	public V getOrElse(Supplier<V> defaultValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return getOrElse(value);
 	}
 
 	@Override
 	public <U> Result<U> map(Function<V, U> f) {
-		return success(f.apply(value));
+		try {
+			return success(f.apply(value));
+		} catch (Exception e) {
+			return failure(e);
+		}
 	}
 
 	@Override
 	public <U> Result<U> flatMap(Function<V, Result<U>> f) {
-		return f.apply(value);
+		try {
+			return f.apply(value);
+		} catch (Exception e) {
+			return failure(e);
+		}
 	}
 
   }
@@ -119,4 +127,5 @@ public abstract class Result<V> implements Serializable {
   public static <V> Result<V> success(V value) {
     return new Success<>(value);
   }
+
 }

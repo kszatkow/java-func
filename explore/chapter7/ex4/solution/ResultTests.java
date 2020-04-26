@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ks.java.func.Function;
+
 public class ResultTests {
 
 	@SuppressWarnings("serial")
@@ -22,7 +24,7 @@ public class ResultTests {
 	}
 
 	@Test
-	public void testMapLeft() {
+	public void testMapFailure() {
 		String inMsg = "Error!!!";
 		Exception exc = new TestException(inMsg);
 		Result<Integer> result = Result.failure(exc);
@@ -33,73 +35,125 @@ public class ResultTests {
 	}
 
 	@Test
-	public void testMapRight() {
+	public void testMapSuccess() {
 		Integer i = Integer.valueOf(1);
 		Result<Integer> result = Result.success(i);
 		
 		Result<Double> mappedResult = result.map(x -> Double.valueOf(x));
+		
+		assertEquals("Success(1.0)", mappedResult.toString());
+	}
+
+	@Test
+	public void testMapSuccessExcRaised() {
+		Result<Integer> result = Result.success(1);
+		final String inMsg = "Exc!!!";
+		
+		Result<Double> mappedResult = result.map(new Function<Integer, Double>() {
+			@Override
+			public Double apply(Integer arg) {
+				throw new RuntimeException(inMsg);
+			}
+		});
+				
+		assertEquals(String.format("Failure(%s)", inMsg), mappedResult.toString());
+	}
+	
+	@Test
+	public void testFlatMapFailure() {
+		String inMsg = "Error!!!";
+		Exception exc = new TestException(inMsg);
+		Result<Integer> result = Result.failure(exc);
+		
+		Result<Double>  mappedResult = result.flatMap(x -> Result.success(Double.valueOf(x)));
+		
+		assertEquals(String.format("Failure(%s)", inMsg), mappedResult.toString());
+	}
+
+	@Test
+	public void testFlatMapSuccess() {
+		Integer i = Integer.valueOf(1);
+		Result<Integer> result = Result.success(i);
+		
+		Result<Double>  mappedResult = result.flatMap(x -> Result.success(Double.valueOf(x)));
 		
 		assertEquals("Success(1.0)", mappedResult.toString());
 	}
 	
 	@Test
-	public void testFlatMapLeft() {
-		String inMsg = "Error!!!";
-		Exception exc = new TestException(inMsg);
-		Result<Integer> result = Result.failure(exc);
+	public void testFlatMapSuccessExcRaised() {
+		Result<Integer> result = Result.success(1);
+		final String inMsg = "Exc2!!!";
 		
-		Result<Double>  mappedResult = result.flatMap(x -> Result.success(Double.valueOf(x)));
-		
+		Result<Double> mappedResult = result.flatMap(new Function<Integer, Result<Double>>() {
+			@Override
+			public Result<Double> apply(Integer arg) {
+				throw new RuntimeException(inMsg);
+			}
+		});
+				
 		assertEquals(String.format("Failure(%s)", inMsg), mappedResult.toString());
 	}
-
+	
+	
 	@Test
-	public void testFlatMapRight() {
-		Integer i = Integer.valueOf(1);
-		Result<Integer> result = Result.success(i);
+	public void testGetOrElseSupFailure() {
+		Result<Integer> result = Result.failure(new Exception());
+		final Integer expectedVal = 5;
 		
-		Result<Double>  mappedResult = result.flatMap(x -> Result.success(Double.valueOf(x)));
+		Integer retrievedVal = result.getOrElse(() -> expectedVal);
 		
-		assertEquals("Success(1.0)", mappedResult.toString());
+		assertEquals(expectedVal, retrievedVal);
 	}
-//	
-//	@Test
-//	public void testGetOrElseLeft() {
-//		Either<Exception, Integer> e = Either.left(new Exception());
-//		final Integer expectedVal = 5;
-//		
-//		Integer retrievedVal = e.getOrElse(() -> expectedVal);
-//		
-//		assertEquals(expectedVal, retrievedVal);
-//	}
-//
-//	@Test
-//	public void testGetOrElseRight() {
-//		Integer expectedVal = new Integer(1);
-//		Either<Exception, Integer> e = Either.right(expectedVal);
-//		
-//		Integer retrievedVal = e.getOrElse(() -> 7);
-//		
-//		assertEquals(expectedVal, retrievedVal);
-//	}
-//	
-//	@Test
-//	public void testOrElseLeft() {
-//		Either<Exception, Integer> e = Either.left(new Exception());
-//		final Integer expectedVal = 5;
-//		
-//		Either<Exception, Integer> retrieved = e.orElse(() -> Either.right(expectedVal));
-//		
-//		assertEquals(String.format("Right(%d)", expectedVal), retrieved.toString());
-//	}
-//
-//	@Test
-//	public void testOrElseRight() {
-//		Integer expectedVal = new Integer(1);
-//		Either<Exception, Integer> e = Either.right(expectedVal);
-//		
-//		Either<Exception, Integer> retrieved = e.orElse(() -> Either.right(7));
-//		
-//		assertEquals(String.format("Right(%d)", expectedVal), retrieved.toString());
-//	}
+	
+	@Test
+	public void testGetOrElseSupSuccess() {
+		Integer expectedVal = 1;
+		Result<Integer> e = Result.success(expectedVal);
+		
+		Integer retrievedVal = e.getOrElse(() -> 7);
+		
+		assertEquals(expectedVal, retrievedVal);
+	}
+	
+	@Test
+	public void testGetOrElseFailure() {
+		Result<Integer> result = Result.failure(new Exception());
+		final Integer expectedVal = 5;
+		
+		Integer retrievedVal = result.getOrElse(expectedVal);
+		
+		assertEquals(expectedVal, retrievedVal);
+	}
+	
+	@Test
+	public void testGetOrElseSuccess() {
+		Integer expectedVal = 1;
+		Result<Integer> e = Result.success(expectedVal);
+		
+		Integer retrievedVal = e.getOrElse(7);
+		
+		assertEquals(expectedVal, retrievedVal);
+	}
+	
+	@Test
+	public void testOrElseFailure() {
+		Result<Integer> result = Result.failure(new Exception());
+		final Integer expectedVal = 13;
+		
+		Result<Integer> retrievedVal = result.orElse(() -> Result.success(expectedVal));
+		
+		assertEquals(String.format("Success(%d)", expectedVal), retrievedVal.toString());
+	}
+	
+	@Test
+	public void testOrElseSuccess() {
+		final Integer expectedVal = 15;
+		Result<Integer> result = Result.success(expectedVal);
+		
+		Result<Integer> retrievedVal = result.orElse(() -> Result.success(106));
+		
+		assertEquals(String.format("Success(%d)", expectedVal), retrievedVal.toString());
+	}
+	
 }
